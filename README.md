@@ -1,344 +1,364 @@
-# Sublimation & Custom Printing Business Platform
 
-A MERN-based business management platform for a sublimation and custom printing business.
-> **Project status:** Foundation/setup stage; MongoDB Atlas backend connection confirmed by project owner
-> **Primary branch:** `master`
-> **Application implementation:** Existing backend connection reported; remaining implementation status pending inspection
+# TeeCraft — Sublimation & Custom Printing Business Platform
+
+**Tagline:** Wear Your Ideas
+
+A MERN-based business management platform for a sublimation and custom printing business. TeeCraft is being developed incrementally, with a focus on maintainability, security, usability, and reliable business workflows.
+
+
+> **Project status:** Foundation implementation in progress
+> **Brand:** TeeCraft
+> **Primary branch:** `master` (confirm against the local repository before relying on this value)
+
+> **Architecture:** Modular monolith
+> **Primary requirements:** `PROJECT_MASTER_SPECIFICATION`
 
 ---
 
 ## 1. Project Purpose
 
-This project is being developed from scratch to provide a centralized platform for managing the operational and customer-facing requirements of a sublimation and custom printing business.
+TeeCraft aims to provide a centralized platform for managing the operational and customer-facing needs of a sublimation and custom printing business.
 
-The platform is intended to bring product management, customization, customers, orders, artwork, production, inventory, enquiries, quotations, financial records, business content, and related administrative workflows into one system.
+The planned platform covers product management, customization, customer accounts, orders, artwork, production, inventory, enquiries, quotations, financial records, business content, reporting, and related workflows.
 
-The **`PROJECT_MASTER_SPECIFICATION`** is the primary requirements document for this project. Development decisions must remain consistent with that specification.
+The `PROJECT_MASTER_SPECIFICATION` is the primary project requirements document. Architecture, security decisions, development order, design conventions, and implementation scope must remain consistent with it.
 
----
+## 2. Brand Identity
 
-## 2. Technology Stack
+| Property | Specification |
+| --- | --- |
+| Brand name | TeeCraft |
+| Tagline | Wear Your Ideas |
+| Brand personality | Creative, simple, dependable |
+| Logo concept | Minimal T-shirt combined with the letter T |
+| Logo style | Flat, scalable, recognisable |
+| Primary colour | Charcoal `#191919` |
 
-### Core Stack
+The website frontend should apply this identity consistently across its header, homepage, buttons, navigation, and responsive layouts.
+
+## 3. Technology Stack
 
 | Layer | Technology |
-|---|---|
+| --- | --- |
 | Frontend | React |
-| Backend | Node.js + Express |
+| Frontend tooling | Vite |
+| Backend runtime | Node.js |
+| Backend framework | Express |
 | Database | MongoDB |
-| Architecture | Modular monolith |
-| Version Control | Git + GitHub |
+| Database integration | Mongoose |
+| API communication | HTTP using the Fetch API |
+| Version control | Git |
+| Development tools | VS Code and npm |
 
-Additional packages, services, and integrations will be introduced only when required by an approved development step.
+Additional libraries, services, and integrations should be introduced only when required by the applicable specification and the current development step.
 
----
+## 4. Architecture
 
-## 3. Architecture
-
-The project follows a **modular monolithic MERN architecture**.
-
-The planned application consists of:
+The application follows a modular monolithic MERN architecture.
 
 ```text
-React Frontend
-      │
-      │ HTTP/API
-      ▼
-Express + Node.js Backend
-      │
-      ▼
-MongoDB
+React + Vite Frontend
+         |
+         | HTTP / JSON API
+         v
+Node.js + Express Backend
+         |
+         v
+MongoDB Atlas
 ```
 
-The application will use one frontend, one backend, and one primary database rather than introducing unnecessary microservices or distributed infrastructure.
+The frontend and backend are maintained as separate applications within the same repository. The backend is responsible for API validation, business rules, authentication, authorization, and data access. The frontend must not be treated as a trusted authority for permissions, pricing, stock, or other critical business values.
 
-Internal modules will remain separated by responsibility while operating within the same application.
+Microservices and unnecessary infrastructure should not be introduced without a clear requirement.
 
----
+## 5. Planned Functional Areas
 
-## 4. Major Functional Areas
+The following areas describe the intended platform scope. They are not claims that these features have already been implemented.
 
-The master specification identifies the following major areas for the platform.
+### 5.1 Products and Customization
 
-### Product & Customization
+- Product catalogue and product details
+- Custom printing options
+- Product media and artwork
+- Product-specific customization requirements
+- Customer design submission workflows
 
-- Product catalog
-- Product customization
-- Product media
-- Custom printing requirements
-- Customer artwork and design workflows
-
-### Customers & Accounts
+### 5.2 Customers and Accounts
 
 - Customer accounts
-- Staff access
-- Administrative access
+- Staff and administrative accounts
+- Authentication
 - Role-based authorization
 - Customer-related business records
 
-### Shopping & Orders
+### 5.3 Shopping and Orders
 
-- Cart
-- Wishlist
-- Checkout
-- Orders
+- Cart and wishlist
+- Checkout workflows
+- Order creation and tracking
 - Backend-authoritative pricing and totals
 - Stock-aware business rules
 
-### Artwork & Production
+### 5.4 Artwork and Production
 
 - Artwork submission
 - Artwork review
-- Approval workflows
-- Production tracking
+- Customer approval workflows
+- Production status tracking
 
-### Inventory
+### 5.5 Inventory
 
 - Inventory records
 - Stock management
-- Inventory-related business rules
-- Import/export workflows
+- Inventory validation and business rules
+- Data import and export
 
-### Business Operations
+### 5.6 Business Operations
 
 - Enquiries
 - Quotations
-- Orders
+- Order management
 - Financial records
 - Business reporting
 
-### Content & Communication
+### 5.7 Content and Communication
 
-- FAQs
-- Testimonials
+- FAQs and testimonials
 - Social links
 - Business-facing content
 - Analytics-related capabilities
 
-### Data Import & Export
+### 5.8 Data Import and Export
 
-- Excel/CSV imports
-- Validation of imported data
+- CSV and Excel imports
+- Import validation
 - PDF exports
 - Excel exports
 
-### Optional Integrations
+### 5.9 Optional Integrations
 
-The master specification also identifies optional integrations that may be considered later, including:
+Potential later integrations include email, WhatsApp, chatbot functionality, and AI/image-generation-related features. They must remain out of scope until their requirements and development stage are reached.
 
-- AI/image-generation-related functionality
-- Email
-- WhatsApp
-- Chatbot functionality
+## 6. Security Principles
 
-Optional integrations will not be added until their requirements and implementation stage are reached.
-
----
-
-## 5. Security Principles
-
-Security and data integrity are primary project requirements.
+Security and data integrity are core requirements, not optional finishing tasks.
 
 The application must:
 
-- Protect authenticated and administrative APIs.
-- Enforce authorization on the server.
-- Never trust client-provided permissions.
-- Never trust client-provided prices, stock quantities, totals, or other critical business values.
-- Keep secrets and credentials outside version control.
-- Validate and sanitize user input.
+- Enforce authorization on the server for protected operations.
+- Never trust client-provided roles, permissions, prices, totals, or stock quantities.
+- Validate and sanitize untrusted input.
+- Keep credentials and secrets out of version control.
+- Use environment variables for local configuration where appropriate.
 - Handle file uploads securely.
-- Restrict administrative and developer-level functionality appropriately.
-- Maintain appropriate audit records.
-- Preserve important business records rather than silently deleting them.
-- Apply secure authentication and authorization practices.
+- Protect administrative functionality.
+- Apply appropriate authentication and session/token security.
+- Preserve important business records and use deliberate deletion policies.
+- Use suitable error handling without leaking secrets or sensitive internal details.
+- Consider auditability for important business operations.
+- Review security implications during each implementation step.
 
-Security requirements must be considered during implementation rather than added as an afterthought.
+## 7. Development Rules
 
----
-
-## 6. Development Rules
-
-Development follows a controlled, incremental process.
-
-### One Step at a Time
-
-Only one development step is implemented at a time.
+Development must proceed one step at a time.
 
 Each step should:
 
-1. Define the objective.
-2. Identify prerequisites.
-3. Make only the required changes.
-4. Explain important implementation decisions.
-5. Run appropriate checks/tests.
-6. Investigate failures before proceeding.
-7. Review relevant security implications.
+1. Define its objective and prerequisites.
+2. Inspect relevant existing files before modifying them.
+3. Make only the changes required for that step.
+4. Explain implementation decisions in beginner-friendly language.
+5. Run appropriate syntax checks, linting, builds, or tests.
+6. Investigate failures rather than assuming success.
+7. Review relevant security and configuration implications.
 8. Update documentation when appropriate.
+9. Wait for explicit approval before staging or committing changes.
 
-### Verification
+### Verification terminology
 
-The project distinguishes between:
+- **Planned:** Work has not yet been implemented.
+- **Implemented:** Code or configuration has been created.
+- **Tested:** A relevant check has been run.
+- **Verified:** The result has been inspected and confirmed.
+- **Committed:** Changes have been committed to Git.
+- **Deployed:** Changes have been deployed to a target environment.
 
-- **Proposed** — planned but not implemented.
-- **Implemented** — code/configuration has been created.
-- **Tested** — a relevant test or verification command has been executed.
-- **Verified** — the result has been inspected and confirmed.
-- **Committed** — changes have been committed to Git.
-- **Deployed** — changes have been deployed to a target environment.
+These statuses must not be treated as interchangeable. Do not claim a test passed unless its result has been observed.
 
-No status will be represented as completed without verification.
+### Git policy
 
-### Git
+- Do not stage changes automatically.
+- Do not commit changes without explicit approval.
+- Review the working tree and diff before proposing a commit.
+- Do not assume that an initial commit exists.
+- Do not overwrite unrelated user changes.
 
-Git changes will not be staged or committed automatically.
+## 8. Development Roadmap
 
-A commit should occur only after:
-
-1. The current development step passes its checks.
-2. The changes have been reviewed.
-3. The project owner explicitly approves the commit.
-
-The primary development branch is:
-
-```text
-master
-```
-
----
-
-## 7. Development Roadmap
-
-The project will be developed incrementally according to the master specification.
+The roadmap below reflects the progress reported so far. Verify local files and command output before changing a status to complete.
 
 ### Phase 1 — Environment Verification
 
-- Verify development environment.
-- Verify required tooling.
-- Confirm prerequisites.
+- Verify the development environment.
+- Check required tooling and prerequisites.
 
-**Status:** Completed
+**Status:** Previously completed according to project progress.
 
-### Phase 2 — Git & Project Foundation
+### Phase 2 — Git and Project Foundation
 
-- Initialize Git repository.
-- Establish `.gitignore`.
-- Establish README and changelog.
-- Establish the initial project foundation.
+- Review repository structure and Git configuration.
+- Maintain `.gitignore`.
+- Maintain `README.md` and `CHANGELOG.md`.
+- Review the initial project foundation.
+- Verify the current working tree and relevant documentation.
 
-**Status:** In progress
+**Status:** In progress; final foundation review and documentation verification remain.
 
-### Phase 3 — React & Design System
+### Phase 3 — React and Design System
 
-- Establish frontend foundation.
-- Establish shared design system.
-- Establish reusable UI patterns.
-- Establish responsive and accessible frontend foundations.
+- Establish the React/Vite frontend.
+- Establish shared styling and reusable UI components.
+- Build responsive frontend foundations.
+- Apply TeeCraft branding.
+- Centralize frontend API communication.
 
-**Status:** Planned
+**Status:** Frontend implementation, lint, and production build have been reported as verified in prior project work. Review current files before making further claims.
 
-### Phase 4 — Express & MongoDB Foundation
+### Phase 4 — Express and MongoDB Foundation
 
-- Establish backend foundation.
-- Configure Express.
-- Inspect and verify the existing MongoDB Atlas connection.
-- Establish backend configuration and environment handling.
+- Establish the Express backend.
+- Configure environment handling.
+- Configure CORS and security headers.
+- Connect to MongoDB Atlas using Mongoose.
+- Provide a health endpoint.
+- Handle HTTP server and database shutdown.
 
-**Status:** Partially complete — MongoDB Atlas backend connection confirmed by project owner; remaining backend foundation pending inspection
+**Status:** Core implementation is present. The health endpoint, MongoDB connection, and direct-run shutdown have been reported as verified. Nodemon shutdown output has previously stopped before its final database-disconnection messages; investigate if the behavior recurs.
 
-### Phase 5 — Shared UI & Application Layout
+### Phase 5 — Shared UI and Application Layout
 
 - Establish application layouts.
-- Establish shared navigation and UI structures.
-- Establish reusable frontend components.
+- Establish shared navigation.
+- Establish reusable page structures.
+- Verify responsive behaviour and accessibility.
 
-**Status:** Planned
+**Status:** Planned; inspect the specification and current application before starting.
 
-### Phase 6 — Authentication & Authorization
+### Phase 6 — Authentication and Authorization
 
-- Authentication foundation.
-- Role-based access control.
-- Protected routes and APIs.
-- Secure authorization boundaries.
+- Establish authentication foundations.
+- Implement role-based access control.
+- Protect frontend routes where applicable.
+- Protect backend APIs.
+- Verify authorization boundaries and failure cases.
 
-**Status:** Planned
+**Status:** Planned; do not begin until the preceding foundations and requirements are reviewed.
 
-### Later Phases
+### Later Development
 
-Subsequent phases will implement the business modules defined by the master specification, including products, customization, customers, cart/checkout, orders, artwork, production, inventory, enquiries, quotations, financial records, content management, imports/exports, analytics, and approved integrations.
+Implement the remaining business modules in the order defined by `PROJECT_MASTER_SPECIFICATION`. Introduce optional integrations only when their requirements are approved and the appropriate development stage is reached.
 
-Detailed implementation will be introduced only when each phase is reached.
+## 9. Repository Structure
 
----
-
-## 8. Repository Structure
-
-The repository structure will be established incrementally. An existing `sublimation-gallery/` directory is present; its contents and role have not yet been inspected.
-
-The project will maintain a clear separation between:
+The following is a simplified view of the reported project layout, not a complete file listing. Verify it against the actual repository before using it as a definitive inventory.
 
 ```text
-Frontend
-Backend
-Shared configuration/documentation
+sublimation-custom-printing/
+├── sublimation-client/
+│   └── React + Vite frontend
+├── sublimation-server/
+│   ├── src/
+│   │   ├── app.js
+│   │   ├── server.js
+│   │   └── config/
+│   │       ├── database.js
+│   │       └── dns.js
+│   ├── .env.example
+│   └── package.json
+├── README.md
+├── CHANGELOG.md
+└── .gitignore
 ```
 
-The final structure will be determined during the relevant implementation steps rather than creating unnecessary directories in advance.
+Keep frontend and backend responsibilities separate. Add folders and modules incrementally when required by the current development step; do not create unnecessary structure in advance.
 
----
+## 10. Environment Variables and Secrets
 
-## 9. Environment Variables & Secrets
+Real credentials must remain in local environment configuration or an appropriate secret-management system. Never commit them or include them in documentation, logs, screenshots, or support messages.
 
-Sensitive configuration must never be committed to Git.
+Examples of sensitive values include:
 
-Examples include:
-
-- Database credentials
+- MongoDB connection strings and passwords
 - Authentication secrets
 - API keys
-- Third-party service credentials
 - Email credentials
-- Integration credentials
+- Third-party integration credentials
 
-Environment variable templates may be committed when needed, but real secret values must remain local or in an appropriate secure environment.
+Commit safe environment templates such as `.env.example` when appropriate, using placeholders rather than real values. Confirm `.gitignore` protects local `.env` files.
 
----
+### Backend configuration
 
-## 10. Documentation
+The backend currently uses environment variables including:
 
-The project documentation includes:
+- `PORT`
+- `CLIENT_ORIGIN`
+- `NODE_ENV`
+- `MONGO_URI`
 
-- `README.md` — project overview, architecture, rules, and development status.
-- `CHANGELOG.md` — chronological record of project changes.
-- `PROJECT_MASTER_SPECIFICATION` — primary project requirements and development guidance.
+The exact values belong in the local environment configuration, not this README.
 
-Additional architecture decisions, requirements tracking, and progress documentation will be added when required by the project workflow.
+The development DNS resolver workaround should only remain enabled where required. Review its security and deployment implications before production use.
 
----
+## 11. Current Verification Status
 
-## 11. Current Status
+This section records reported progress, not a substitute for rerunning checks against the current working tree.
 
 ### Environment
 
-- Windows development environment — verified
-- Node.js — verified
-- npm — verified
-- Git — verified
-- VS Code — verified
-- MongoDB Atlas — backend connection confirmed by project owner
+- Windows development environment — previously verified.
+- Node.js and npm — previously verified.
+- Git and VS Code — previously verified.
 
-### Git
+### Frontend
 
-- Repository initialized — verified
-- Primary branch: `master`
-- Initial commit — **not yet created**
+- React/Vite frontend — implemented.
+- Reusable UI components — implemented in prior work.
+- Centralized API service — implemented in prior work.
+- Lint and production build — reported passed in prior work.
+- Frontend-to-backend health integration — previously reported successful.
 
-### Application
+### Backend
 
-- React application — status pending inspection
-- Express application — status pending inspection
-- MongoDB backend connection — connected to MongoDB Atlas (confirmed by project owner; not independently tested here)
-- Authentication — status pending inspection
-- Business modules — status pending inspection
+- Express application and server entry point — implemented.
+- CORS and Helmet configuration — previously verified.
+- `GET /api/health` — previously returned HTTP 200 with the expected JSON response.
+- MongoDB Atlas connection — successful connection reported in terminal output.
+- Direct `node src/server.js` startup — verified in reported output.
+- Direct-run graceful shutdown — verified, including HTTP server closure and MongoDB disconnection.
+- `npm run dev` shutdown — follow-up diagnostic may be needed if final database-disconnection messages remain absent.
 
-* The project is intentionally being built incrementally rather than generating the entire application at once.
+### Git and documentation
+
+- Git repository and branch — verify against the current local repository.
+- README and changelog — update and review as development progresses.
+- Initial commit — not confirmed; do not assume one exists.
+- Staging or committing changes — requires explicit project-owner approval.
+
+### Not yet implemented or not verified here
+
+- Authentication and authorization
+- Business modules
+- Production deployment
+- End-to-end test coverage for the complete application
+
+## 12. Documentation
+
+- `README.md` — project overview, architecture, security principles, roadmap, and current status.
+- `CHANGELOG.md` — chronological record of implemented changes and verified milestones.
+- `PROJECT_MASTER_SPECIFICATION` — primary requirements and development guidance.
+
+Keep these documents consistent with the actual repository and observed test results. If a status is uncertain, state that it needs verification instead of assuming completion.
+
+---
+
+**Development principle:** Build TeeCraft incrementally, verify each step, preserve existing work, and obtain explicit approval before staging or committing changes.
