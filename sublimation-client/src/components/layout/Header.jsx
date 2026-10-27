@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -10,51 +10,57 @@ function Header() {
     }
 
     return (
-        <header className="site-header">
-            <div className="container header-inner">
-                <Link
-                    className="brand"
-                    to="/"
-                    aria-label="TeeCraft homepage"
-                    onClick={closeMenu}
-                >
-                    <span className="brand-mark" aria-hidden="true">
-                        T
-                    </span>
+        <>
+            <a className="skip-link" href="#main-content">
+                Skip to main content
+            </a>
 
-                    <span className="brand-name">TeeCraft</span>
-                </Link>
+            <header className="site-header">
+                <div className="container header-inner">
+                    <Link
+                        className="brand"
+                        to="/"
+                        aria-label="TeeCraft homepage"
+                        onClick={closeMenu}
+                    >
+                        <span className="brand-mark" aria-hidden="true">
+                            T
+                        </span>
 
-                <button
-                    className="menu-toggle"
-                    type="button"
-                    aria-label={menuOpen ? "Close menu" : "Open menu"}
-                    aria-expanded={menuOpen}
-                    aria-controls="primary-navigation"
-                    onClick={() => setMenuOpen((current) => !current)}
-                >
-                    {menuOpen ? "Close" : "Menu"}
-                </button>
-
-                <nav
-                    id="primary-navigation"
-                    className={`navigation ${menuOpen ? "navigation-open" : ""}`}
-                    aria-label="Primary navigation"
-                >
-                    <Link to="/" onClick={closeMenu}>
-                        Home
+                        <span className="brand-name">TeeCraft</span>
                     </Link>
 
-                    <a href="/#categories" onClick={closeMenu}>
-                        Explore
-                    </a>
+                    <button
+                        className="menu-toggle"
+                        type="button"
+                        aria-label={menuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={menuOpen}
+                        aria-controls="primary-navigation"
+                        onClick={() => setMenuOpen((current) => !current)}
+                    >
+                        {menuOpen ? "Close" : "Menu"}
+                    </button>
 
-                    <a href="/#about" onClick={closeMenu}>
-                        About
-                    </a>
-                </nav>
-            </div>
-        </header>
+                    <nav
+                        id="primary-navigation"
+                        className={`navigation ${menuOpen ? "navigation-open" : ""}`}
+                        aria-label="Primary navigation"
+                    >
+                        <NavLink to="/" end onClick={closeMenu}>
+                            Home
+                        </NavLink>
+
+                        <a href="/#categories" onClick={closeMenu}>
+                            Explore
+                        </a>
+
+                        <a href="/#about" onClick={closeMenu}>
+                            About
+                        </a>
+                    </nav>
+                </div>
+            </header>
+        </>
     );
 }
 

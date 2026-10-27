@@ -9,7 +9,7 @@ function SiteLayout() {
         <>
             <Header />
 
-            <main id="home">
+            <main id="main-content" tabIndex={-1}>
                 <Outlet />
             </main>
 
