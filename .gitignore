@@ -1,5 +1,7 @@
 # files
 commands.md
+PROJECT_MASTER_SPECIFICATION .md
+demo
 
 # Dependencies
 node_modules/
@@ -47,3 +49,9 @@ desktop.ini
 # Temporary files
 .tmp/
 .temp/
+
+# Local authentication test artifacts (may contain credentials or tokens)
+auth-cookies.txt
+cookies.txt
+login-test.json
+register-test.json

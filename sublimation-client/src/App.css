@@ -1,5 +1,11 @@
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-content {
+  flex: 1;
 }
 
 .site-header {
@@ -354,4 +360,32 @@
 
 #main-content:focus {
   outline: none;
+}
+
+
+/*  Dashboard */
+
+.navigation-logout {
+  border: none;
+  padding: 8px 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.navigation-logout:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.navigation-logout:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.header-logout-error {
+  margin: 0;
+  padding: 10px 0;
+  color: #b42318;
+  font-size: 13px;
 }

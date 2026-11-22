@@ -1,15 +1,13 @@
-
 # TeeCraft — Sublimation & Custom Printing Business Platform
 
 **Tagline:** Wear Your Ideas
 
 A MERN-based business management platform for a sublimation and custom printing business. TeeCraft is being developed incrementally, with a focus on maintainability, security, usability, and reliable business workflows.
 
-
-> **Project status:** Foundation implementation in progress
+> **Project status:** Phase 6 — Authentication and Authorization in progress; final review and documentation reconciliation remain.
+>
 > **Brand:** TeeCraft
 > **Primary branch:** `master` (confirm against the local repository before relying on this value)
-
 > **Architecture:** Modular monolith
 > **Primary requirements:** `PROJECT_MASTER_SPECIFICATION`
 
@@ -26,7 +24,7 @@ The `PROJECT_MASTER_SPECIFICATION` is the primary project requirements document.
 ## 2. Brand Identity
 
 | Property | Specification |
-| --- | --- |
+|---|---|
 | Brand name | TeeCraft |
 | Tagline | Wear Your Ideas |
 | Brand personality | Creative, simple, dependable |
@@ -39,7 +37,7 @@ The website frontend should apply this identity consistently across its header, 
 ## 3. Technology Stack
 
 | Layer | Technology |
-| --- | --- |
+|---|---|
 | Frontend | React |
 | Frontend tooling | Vite |
 | Backend runtime | Node.js |
@@ -64,10 +62,23 @@ React + Vite Frontend
 Node.js + Express Backend
          |
          v
-MongoDB Atlas
+MongoDB
 ```
 
-The frontend and backend are maintained as separate applications within the same repository. The backend is responsible for API validation, business rules, authentication, authorization, and data access. The frontend must not be treated as a trusted authority for permissions, pricing, stock, or other critical business values.
+The frontend and backend are maintained as separate applications within the same repository.
+
+The backend is responsible for:
+
+- API validation.
+- Business rules and calculations.
+- Authentication and authorization.
+- Data access and persistence.
+- Security controls.
+- Consistent error handling.
+
+The frontend must not be treated as a trusted authority for permissions, pricing, discounts, taxes, stock quantities, payment status, or other critical business values.
+
+The backend should use clear separation of responsibilities, including routes, controllers, services, middleware, models, validation, configuration, and utilities as appropriate.
 
 Microservices and unnecessary infrastructure should not be introduced without a clear requirement.
 
@@ -77,67 +88,109 @@ The following areas describe the intended platform scope. They are not claims th
 
 ### 5.1 Products and Customization
 
-- Product catalogue and product details
-- Custom printing options
-- Product media and artwork
-- Product-specific customization requirements
-- Customer design submission workflows
+- Product catalogue and product details.
+- Dynamic product categories.
+- Product variants and SKU management.
+- Custom printing options.
+- Product media and artwork.
+- Product-specific customization requirements.
+- Print dimensions and print-position configuration.
+- Customer design submission workflows.
+- Product pricing and availability management.
 
 ### 5.2 Customers and Accounts
 
-- Customer accounts
-- Staff and administrative accounts
-- Authentication
-- Role-based authorization
-- Customer-related business records
+- Customer accounts.
+- Staff and administrative accounts.
+- Customer authentication.
+- Password recovery.
+- Role-based authorization.
+- Account activation, deactivation, and suspension.
+- Customer profiles and related business records.
+- Controlled administrative account management.
+
+Public registration must not allow users to assign themselves privileged roles.
 
 ### 5.3 Shopping and Orders
 
-- Cart and wishlist
-- Checkout workflows
-- Order creation and tracking
-- Backend-authoritative pricing and totals
-- Stock-aware business rules
+- Cart and wishlist.
+- Checkout workflows when enabled.
+- Order creation and tracking.
+- Backend-authoritative pricing and totals.
+- Stock-aware business rules.
+- Order snapshots that preserve the purchased product and pricing details.
+- Separate payment and order statuses.
+
+The backend must calculate and validate critical financial and stock values. A frontend response alone must never establish that a payment succeeded.
 
 ### 5.4 Artwork and Production
 
-- Artwork submission
-- Artwork review
-- Customer approval workflows
-- Production status tracking
+- Artwork submission.
+- Secure artwork storage and validation.
+- Artwork review.
+- Customer approval workflows.
+- Preservation of original artwork and relevant versions.
+- Production status tracking.
+- Quality-control and dispatch workflows.
+
+Production-critical artwork should receive appropriate human review.
 
 ### 5.5 Inventory
 
-- Inventory records
-- Stock management
-- Inventory validation and business rules
-- Data import and export
+- Inventory records.
+- Stock management.
+- Inventory validation and business rules.
+- Inventory movement history.
+- Supplier-related records.
+- Data import and export.
+
+Inventory operations must prevent negative stock and handle concurrent updates safely.
 
 ### 5.6 Business Operations
 
-- Enquiries
-- Quotations
-- Order management
-- Financial records
-- Business reporting
+- Enquiries.
+- Quotations.
+- Order management.
+- Financial records.
+- Supplier records.
+- Invoice and payment records.
+- Business reporting.
+
+Business policies such as tax, shipping, payment, and refund rules must be established explicitly rather than invented during implementation.
 
 ### 5.7 Content and Communication
 
-- FAQs and testimonials
-- Social links
-- Business-facing content
-- Analytics-related capabilities
+- FAQs and testimonials.
+- Social links.
+- Business-facing content.
+- Customer feedback.
+- Analytics-related capabilities.
+
+Testimonials require appropriate consent and moderation.
 
 ### 5.8 Data Import and Export
 
-- CSV and Excel imports
-- Import validation
-- PDF exports
-- Excel exports
+- CSV and Excel imports.
+- Import preview and validation.
+- Duplicate detection.
+- Explicit confirmation before applying imports.
+- PDF exports.
+- Excel exports.
+- Permission-controlled data access and export.
+
+Imports must not silently overwrite existing records.
 
 ### 5.9 Optional Integrations
 
-Potential later integrations include email, WhatsApp, chatbot functionality, and AI/image-generation-related features. They must remain out of scope until their requirements and development stage are reached.
+Potential later integrations include:
+
+- Email.
+- WhatsApp.
+- Chatbot functionality.
+- AI-assisted features.
+- Image-generation-related functionality.
+
+These integrations must remain out of scope until their requirements and development stage are reached. External services, APIs, and pricing must be checked when an integration is actually planned.
 
 ## 6. Security Principles
 
@@ -146,17 +199,26 @@ Security and data integrity are core requirements, not optional finishing tasks.
 The application must:
 
 - Enforce authorization on the server for protected operations.
-- Never trust client-provided roles, permissions, prices, totals, or stock quantities.
+- Never trust client-provided roles, permissions, prices, totals, payment status, or stock quantities.
 - Validate and sanitize untrusted input.
 - Keep credentials and secrets out of version control.
 - Use environment variables for local configuration where appropriate.
+- Hash passwords using an appropriate password-hashing algorithm.
+- Protect authentication cookies and sessions/tokens.
+- Apply CSRF and trusted-origin protections where required.
+- Apply rate limiting to sensitive authentication and recovery endpoints.
+- Use secure, expiring password-reset tokens.
+- Avoid revealing whether an account exists during password-recovery requests.
+- Enforce account status during authentication and protected requests.
 - Handle file uploads securely.
 - Protect administrative functionality.
-- Apply appropriate authentication and session/token security.
 - Preserve important business records and use deliberate deletion policies.
 - Use suitable error handling without leaking secrets or sensitive internal details.
 - Consider auditability for important business operations.
+- Prevent removal or deactivation of the last active administrator.
 - Review security implications during each implementation step.
+
+The Developer role must remain separate from the Admin role and must have narrowly restricted diagnostic capabilities.
 
 ## 7. Development Rules
 
@@ -168,11 +230,14 @@ Each step should:
 2. Inspect relevant existing files before modifying them.
 3. Make only the changes required for that step.
 4. Explain implementation decisions in beginner-friendly language.
-5. Run appropriate syntax checks, linting, builds, or tests.
-6. Investigate failures rather than assuming success.
-7. Review relevant security and configuration implications.
-8. Update documentation when appropriate.
-9. Wait for explicit approval before staging or committing changes.
+5. Provide exact commands for the relevant development environment.
+6. Run appropriate syntax checks, linting, builds, or tests.
+7. Investigate failures rather than assuming success.
+8. Review relevant security and configuration implications.
+9. Update documentation when appropriate.
+10. Wait for explicit approval before staging or committing changes.
+
+Do not generate the entire application at once or continue to another development step while the current step has unresolved failures.
 
 ### Verification terminology
 
@@ -192,10 +257,12 @@ These statuses must not be treated as interchangeable. Do not claim a test passe
 - Review the working tree and diff before proposing a commit.
 - Do not assume that an initial commit exists.
 - Do not overwrite unrelated user changes.
+- Preserve uncommitted work.
+- Resolve and verify the current development step before creating a Git checkpoint.
 
 ## 8. Development Roadmap
 
-The roadmap below reflects the progress reported so far. Verify local files and command output before changing a status to complete.
+The roadmap below reflects the progress reported so far. Statuses must be checked against the actual repository and acceptance criteria before being changed to complete.
 
 ### Phase 1 — Environment Verification
 
@@ -222,41 +289,151 @@ The roadmap below reflects the progress reported so far. Verify local files and 
 - Apply TeeCraft branding.
 - Centralize frontend API communication.
 
-**Status:** Frontend implementation, lint, and production build have been reported as verified in prior project work. Review current files before making further claims.
+**Status:** Frontend implementation, lint, and production build were reported as verified in prior project work. Review current files before making further claims.
 
 ### Phase 4 — Express and MongoDB Foundation
 
 - Establish the Express backend.
 - Configure environment handling.
 - Configure CORS and security headers.
-- Connect to MongoDB Atlas using Mongoose.
+- Connect to MongoDB using Mongoose.
 - Provide a health endpoint.
 - Handle HTTP server and database shutdown.
 
-**Status:** Core implementation is present. The health endpoint, MongoDB connection, and direct-run shutdown have been reported as verified. Nodemon shutdown output has previously stopped before its final database-disconnection messages; investigate if the behavior recurs.
+**Status:** Core implementation is present. The health endpoint, MongoDB connection, and direct-run shutdown have been reported as verified. Nodemon shutdown output has previously stopped before its final database-disconnection messages; investigate if the behaviour recurs.
 
 ### Phase 5 — Shared UI and Application Layout
 
 - Establish application layouts.
 - Establish shared navigation.
 - Establish reusable page structures.
+- Establish reusable forms and UI components.
 - Verify responsive behaviour and accessibility.
 
-**Status:** Planned; inspect the specification and current application before starting.
+**Status:** Partially implemented according to prior project work. Full completion of the Phase 5 acceptance criteria has not been confirmed in the current review.
 
 ### Phase 6 — Authentication and Authorization
 
-- Establish authentication foundations.
-- Implement role-based access control.
-- Protect frontend routes where applicable.
-- Protect backend APIs.
-- Verify authorization boundaries and failure cases.
+- Establish the MongoDB User model.
+- Define customer, staff, admin, and developer roles.
+- Implement customer-only public registration.
+- Implement login and logout.
+- Implement secure authentication cookies and token handling.
+- Implement CSRF and trusted-origin protections.
+- Implement password recovery.
+- Implement account-status enforcement.
+- Implement reusable server-side role-authorization middleware.
+- Verify authentication, authorization, and failure cases.
 
-**Status:** Planned; do not begin until the preceding foundations and requirements are reviewed.
+**Status:** In progress. The authentication foundation, password recovery, rate limiting, account-status enforcement, and associated automated tests have been implemented. The latest reported full backend test suite passed 66 tests with no failures. Final review against the master specification and documentation reconciliation remain.
 
-### Later Development
+Business-endpoint authorization must also be verified as the relevant business modules are implemented. Those business endpoints are not yet covered by the current Phase 6 verification.
 
-Implement the remaining business modules in the order defined by `PROJECT_MASTER_SPECIFICATION`. Introduce optional integrations only when their requirements are approved and the appropriate development stage is reached.
+
+### Phase 7 — Profiles and Dashboards
+
+- Implement customer profiles.
+- Implement appropriate staff and administrative dashboards.
+- Enforce role and permission boundaries.
+- Protect customer information.
+
+**Status:** In progress. The customer dashboard layout, protected dashboard access, and self-service profile name update have been implemented. The profile update is authenticated, CSRF-protected, validated on the server, restricted to the permitted name field, and verified to persist in MongoDB. Remaining work includes assessing and implementing appropriate staff and administrative dashboards and completing the phase's role and permission-boundary review.
+
+### Phase 8 — Central Administration and User Management
+
+- Implement administrative user management.
+- Implement staff and customer management.
+- Enforce account-status and permission rules.
+- Protect sensitive administrative operations.
+- Maintain suitable audit records.
+
+**Status:** Planned.
+
+### Phase 9 — Products, Categories, and Media
+
+- Implement product and category management.
+- Implement product variants and SKU handling.
+- Implement secure media management.
+- Implement product customization settings.
+- Preserve relevant product information in business records.
+
+**Status:** Planned.
+
+### Phase 10 — Cart, Wishlist, Enquiries, and Quotations
+
+- Implement cart and wishlist functionality.
+- Implement customer enquiries.
+- Implement quotation workflows.
+- Validate all important calculations on the backend.
+
+**Status:** Planned.
+
+### Phase 11 — Artwork, Orders, and Production
+
+- Implement artwork submission and review.
+- Implement customer approval workflows.
+- Implement order management.
+- Implement production stages, quality control, dispatch, and delivery tracking.
+
+**Status:** Planned.
+
+### Phase 12 — Inventory, Suppliers, Invoices, and Payment Records
+
+- Implement inventory and stock movement records.
+- Implement supplier management.
+- Implement invoice records.
+- Implement payment records.
+- Enforce data integrity and authorization.
+
+**Status:** Planned.
+
+### Phase 13 — Excel/CSV Imports and PDF/Excel Exports
+
+- Implement validated data imports.
+- Provide preview and confirmation.
+- Detect duplicates and handle errors safely.
+- Implement authorized PDF and Excel exports.
+
+**Status:** Planned.
+
+### Phase 14 — FAQs, Testimonials, Feedback, Social Links, and Analytics
+
+- Implement business content management.
+- Implement moderated testimonials and customer feedback.
+- Implement social links.
+- Add appropriate reporting and analytics.
+
+**Status:** Planned.
+
+### Phase 15 — Differentiating Features
+
+Implement additional business features only after their requirements, value, security implications, and maintenance costs have been reviewed.
+
+**Status:** Planned.
+
+### Phase 16 — Restricted Developer Tools
+
+- Implement narrowly restricted developer diagnostics.
+- Keep Developer permissions separate from Admin permissions.
+- Prevent public registration or ordinary administrative actions from granting Developer privileges.
+
+**Status:** Planned.
+
+### Phase 17 — Optional Integrations
+
+Evaluate and implement approved integrations such as email, WhatsApp, chatbot, or AI-assisted capabilities.
+
+**Status:** Planned.
+
+### Phase 18 — Integration Testing, Security, Deployment, and Documentation
+
+- Complete integration and end-to-end testing.
+- Review security and authorization boundaries.
+- Verify production configuration.
+- Prepare deployment.
+- Complete technical and user-facing documentation.
+
+**Status:** Planned.
 
 ## 9. Repository Structure
 
@@ -270,9 +447,16 @@ sublimation-custom-printing/
 │   ├── src/
 │   │   ├── app.js
 │   │   ├── server.js
-│   │   └── config/
-│   │       ├── database.js
-│   │       └── dns.js
+│   │   ├── config/
+│   │   │   ├── database.js
+│   │   │   └── dns.js
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── utils/
+│   ├── tests/
 │   ├── .env.example
 │   └── package.json
 ├── README.md
@@ -288,24 +472,37 @@ Real credentials must remain in local environment configuration or an appropriat
 
 Examples of sensitive values include:
 
-- MongoDB connection strings and passwords
-- Authentication secrets
-- API keys
-- Email credentials
-- Third-party integration credentials
+- MongoDB connection strings and passwords.
+- Authentication secrets.
+- API keys.
+- Email credentials.
+- Third-party integration credentials.
 
-Commit safe environment templates such as `.env.example` when appropriate, using placeholders rather than real values. Confirm `.gitignore` protects local `.env` files.
+Commit safe environment templates such as `.env.example` when appropriate, using placeholders or non-sensitive local-development examples rather than real credentials. Confirm `.gitignore` protects local `.env` files.
 
 ### Backend configuration
 
-The backend currently uses environment variables including:
+The backend source references these environment variables:
 
 - `PORT`
 - `CLIENT_ORIGIN`
 - `NODE_ENV`
 - `MONGO_URI`
+- `JWT_SECRET`
+- `JWT_EXPIRES_IN`
 
-The exact values belong in the local environment configuration, not this README.
+The backend database configuration requires `MONGO_URI`. It passes the configured URI to Mongoose and throws an error if the variable is missing.
+
+The root `.env.example` includes this local-development example:
+
+```env
+# MongoDB connection string (local development)
+MONGO_URI=mongodb://127.0.0.1:27017/teecraft
+```
+
+This example does not establish that MongoDB is installed, running, or connected. If MongoDB Atlas is used, configure the actual connection string locally and never commit credentials.
+
+The password-reset email service also requires suitable SMTP configuration when email delivery is enabled. SMTP credentials must remain private and must not be added as real values to the repository.
 
 The development DNS resolver workaround should only remain enabled where required. Review its security and deployment implications before production use.
 
@@ -327,15 +524,40 @@ This section records reported progress, not a substitute for rerunning checks ag
 - Lint and production build — reported passed in prior work.
 - Frontend-to-backend health integration — previously reported successful.
 
-### Backend
+### Backend foundation
 
 - Express application and server entry point — implemented.
 - CORS and Helmet configuration — previously verified.
 - `GET /api/health` — previously returned HTTP 200 with the expected JSON response.
-- MongoDB Atlas connection — successful connection reported in terminal output.
+- MongoDB connection — successful connection reported in terminal output.
 - Direct `node src/server.js` startup — verified in reported output.
 - Direct-run graceful shutdown — verified, including HTTP server closure and MongoDB disconnection.
 - `npm run dev` shutdown — follow-up diagnostic may be needed if final database-disconnection messages remain absent.
+
+### Authentication and authorization
+
+- MongoDB User model — implemented.
+- Customer-only public registration — implemented.
+- JWT authentication using HTTP-only cookies — implemented.
+- CSRF protection and trusted-origin validation — implemented.
+- Token-version-based session revocation on logout — implemented.
+- Reusable server-side role-authorization middleware — implemented.
+- Forgot-password and reset-password endpoints — implemented.
+- Cryptographically random password-reset tokens stored as SHA-256 hashes — implemented.
+- Password-reset token expiry — 15 minutes.
+- Generic password-reset request response for known and unknown email addresses — implemented.
+- Separate password-reset request and submission rate limiters — implemented.
+- Password reset invalidates existing sessions through token-version increment — implemented.
+- Inactive and suspended account rejection during login — tested.
+- Inactive and suspended account rejection by authentication middleware — tested.
+- Latest reported full backend test suite — 66 passed, 0 failed.
+- Authenticated customer profile endpoint — implemented and integration-tested.
+- Profile updates require authentication and a valid CSRF token.
+- Profile updates accept only the permitted name field; role and other unsupported fields are rejected.
+- Profile name update — verified through the frontend, backend, and MongoDB persistence.
+- Backend dependency audit — 0 vulnerabilities reported after the Nodemon dependency update.
+
+The test result above reflects the latest reported test run. Rerun the suite before treating it as verification of any subsequently modified working tree.
 
 ### Git and documentation
 
@@ -346,15 +568,17 @@ This section records reported progress, not a substitute for rerunning checks ag
 
 ### Not yet implemented or not verified here
 
-- Authentication and authorization
-- Business modules
-- Production deployment
-- End-to-end test coverage for the complete application
+- Full business-module implementation.
+- Authorization tests for future business endpoints.
+- Complete administrative user-management workflows.
+- Production deployment.
+- End-to-end test coverage for the complete application.
+- Complete Nodemon shutdown behaviour, unless subsequently verified.
 
 ## 12. Documentation
 
-- `README.md` — project overview, architecture, security principles, roadmap, and current status.
-- `CHANGELOG.md` — chronological record of implemented changes and verified milestones.
+- `README.md` — project overview, architecture, security principles, roadmap, setup information, and current status.
+- `CHANGELOG.md` — record of implemented changes and reported verification results.
 - `PROJECT_MASTER_SPECIFICATION` — primary requirements and development guidance.
 
 Keep these documents consistent with the actual repository and observed test results. If a status is uncertain, state that it needs verification instead of assuming completion.

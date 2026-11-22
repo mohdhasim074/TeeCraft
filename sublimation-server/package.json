@@ -2,21 +2,33 @@
   "name": "sublimation-server",
   "version": "1.0.0",
   "description": "this is backend of my sublimation project",
-  "author": "mohammad hasim",
+  "author": "Mohammad Hasim",
   "type": "module",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test": "node --test"
   },
   "dependencies": {
+    "@getbrevo/brevo": "^6.2.0",
+    "argon2": "^0.45.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
     "helmet": "^8.3.0",
-    "mongoose": "^9.11.4"
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.11.4",
+    "nodemailer": "^10.6.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "mongodb-memory-server": "^11.3.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.3.1"
+  },
+  "allowScripts": {
+    "argon2@0.45.1": true
   }
 }
