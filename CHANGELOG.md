@@ -163,7 +163,7 @@ The current test coverage verifies authentication, password recovery, account-st
 - Added server-side profile-name validation.
 - Verified that profile updates persist in MongoDB.
 - Added five profile-update integration tests covering authentication, CSRF, persistence, unsupported fields, and invalid names.
-- Latest reported backend test result: 66 passed, 0 failed.
+- Latest reported backend test result: 79 passed, 0 failed.
 - Staff and administrative dashboards and the remaining role/permission review are still outstanding.
 
 ### Dependency maintenance
@@ -171,6 +171,20 @@ The current test coverage verifies authentication, password recovery, account-st
 - Updated backend Nodemon to version 3.1.11.
 - Verified the installed Nodemon dependency tree uses minimatch 3.1.5.
 - Backend `npm audit` reported 0 vulnerabilities after the update.
+
+### Phase 8 — Central Administration
+
+- Implemented the first read-only Admin user-management API endpoint: `GET /api/admin/users`.
+- Protected the endpoint with authentication and Admin-role authorization.
+- Added user search by name and email.
+- Added role and account-status filters.
+- Added pagination with a maximum page size of 100.
+- Excluded Developer accounts from the Admin user list.
+- Restricted returned account fields to safe user information.
+- Added integration tests for authentication, authorization, search, filtering, pagination, validation, and private-field exclusion.
+- Verification: 79 backend tests passed; 0 failed.
+- Admin user-list frontend implemented and browser-verified.
+- Role editing, account-status management, and related administrative security controls remain outstanding for Phase 8.4.
 
 ### Documentation
 
@@ -205,7 +219,7 @@ The current test coverage verifies authentication, password recovery, account-st
 ## Verification Notes
 
 - Verification entries are based on reported terminal output and prior project progress.
-- The latest reported complete backend test run passed 66 tests with 0 failures.
+- The latest reported complete backend test run passed 79 tests with 0 failures.
 - That historical result does not guarantee that the current working tree still passes.
 - Rerun relevant checks before treating earlier results as current verification.
 - Nodemon shutdown remains a follow-up item unless its complete shutdown behaviour is verified.

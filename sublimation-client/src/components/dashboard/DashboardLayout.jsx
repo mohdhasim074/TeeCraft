@@ -90,7 +90,18 @@ export default function DashboardLayout() {
                         >
                             Dashboard
                         </NavLink>
-
+                        {user?.role === "admin" && (
+                            <NavLink
+                                to="/dashboard/users"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "dashboard-nav-link is-active"
+                                        : "dashboard-nav-link"
+                                }
+                            >
+                                Manage Users
+                            </NavLink>
+                        )}
                         <Link to="/" className="dashboard-nav-link">
                             Visit website
                         </Link>

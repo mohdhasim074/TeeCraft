@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import SiteLayout from "./components/layout/SiteLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
-
+import AdminUsersPage from "./pages/AdminUsersPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -38,6 +38,7 @@ export default function App() {
             element={<DashboardLayout />}
           >
             <Route index element={<DashboardPage />} />
+            <Route path="users" element={<AdminUsersPage />} />
           </Route>
         </Route>
 

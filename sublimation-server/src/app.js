@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
 import { allowedOrigins } from "./middleware/csrfMiddleware.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorMiddleware.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 
@@ -32,8 +33,9 @@ app.use(
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
-// Existing routes
+// Application routes
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({

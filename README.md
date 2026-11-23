@@ -325,7 +325,7 @@ The roadmap below reflects the progress reported so far. Statuses must be checke
 - Implement reusable server-side role-authorization middleware.
 - Verify authentication, authorization, and failure cases.
 
-**Status:** In progress. The authentication foundation, password recovery, rate limiting, account-status enforcement, and associated automated tests have been implemented. The latest reported full backend test suite passed 66 tests with no failures. Final review against the master specification and documentation reconciliation remain.
+**Status:** In progress. The authentication foundation, password recovery, rate limiting, account-status enforcement, and associated automated tests have been implemented. The latest reported full backend test suite passed 79 tests with no failures. Final review against the master specification and documentation reconciliation remain.
 
 Business-endpoint authorization must also be verified as the relevant business modules are implemented. Those business endpoints are not yet covered by the current Phase 6 verification.
 
@@ -550,7 +550,7 @@ This section records reported progress, not a substitute for rerunning checks ag
 - Password reset invalidates existing sessions through token-version increment — implemented.
 - Inactive and suspended account rejection during login — tested.
 - Inactive and suspended account rejection by authentication middleware — tested.
-- Latest reported full backend test suite — 66 passed, 0 failed.
+- Latest reported full backend test suite — 79 passed, 0 failed.
 - Authenticated customer profile endpoint — implemented and integration-tested.
 - Profile updates require authentication and a valid CSRF token.
 - Profile updates accept only the permitted name field; role and other unsupported fields are rejected.
